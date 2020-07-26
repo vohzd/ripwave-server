@@ -46,58 +46,29 @@ async function downloadVideo(id){
       console.log(data)
       if (data.indexOf("[ffmpeg] Merging formats into") > -1){
         const fileFormat = data.replace(/"/g,"").split(id)[1];
-        fileNameWithExt = `${id}${fileFormat}`;
+        fileNameWithExt = `${id}${fileFormat}`.replace(/\n/g, "");
       }
       if (data.indexOf("has already been downloaded and merged") > -1){
-        console.log("DATA: ALREADY CONVERTED")
-        console.log(data)
-
         // dont hate me for this
         let alreadyDownloadedPath = data.split("[download]")[1].split("has already been downloaded and merged")[0].split(".")
         let fileName = alreadyDownloadedPath[0].split("\\")[alreadyDownloadedPath[0].split("\\").length - 1];
-              fileName = fileName.replace(/\s/g, "");
         const fileExtension = alreadyDownloadedPath[1];
         fileNameWithExt = `${fileName}.${fileExtension}`;
       }
-
-
     });
 
     // errors will arrive as a buffer otherwise...
     cmd.stderr.setEncoding("utf8")
     cmd.stderr.on("data", (err) => {
-      //console.log("ERROR")
-      //console.log(err)
-      if (err.indexOf("has already been downloaded and merged") > -1){
-        console.log("ERR: ALREADY CONVERTED")
-        console.log(err)
-        //return resolve(err)
+      // ignore warnings
+      if (err.indexOf("WARNING:") === -1){
+        return reject(err);
       }
-      else {
-        // ignore warnings...
-        if (err.indexOf("WARNING:") === -1){
-          return reject(err);
-        }
-      }
-
     });
 
     // finally send it back to whomever called it
     cmd.on("close", () => {
-      console.log("CLOSED");
-
-      if (fileNameWithExt){
-        console.log("wee win")
-        return resolve({
-          fileName: fileNameWithExt
-        })
-      }
-      else {
-        console.log("we lose")
-        return reject({
-          fileName: null
-        })
-      }
+      return fileNameWithExt ? resolve({ fileName: fileNameWithExt.replace(/\s/g, "") }) : reject({ fileName: null })
     });
 
   });

@@ -14,9 +14,9 @@ require("./config/index.js")(app);
  *   ROUTES
  */
 
-const youtubeRoutes                  = require("./routes/youtube/index.js");
+const routes                  = require("./routes/index.js");
 
-app.use("/", youtubeRoutes);
+app.use("/", routes);
 
 
 /*

@@ -1,23 +1,26 @@
 const express                             = require("express");
 const router                              = express.Router();
 
-const { errorHandler }                    = require("../../helpers/errorHandler.js");
+const { errorHandler }                    = require("../helpers/errorHandler.js");
 
 const {
   retreiveChannel,
   retreiveChannelPlaylists,
   retreiveVideo
-}                                         = require("../../services/youtube-api/index.js");
+}                                         = require("../services/youtube-api/index.js");
 
 const {
   downloadVideo
-}                                         = require("../../services/youtube-dl/index.js");
+}                                         = require("../services/youtube-dl/index.js");
 
 const {
   convertToMp3
-}                                         = require("../../services/ffmpeg/index.js");
+}                                         = require("../services/ffmpeg/index.js");
 
 router.get("/youtube/video/:id" , async (req, res) => {
+  /*
+   * Gets metadata about a youtube video using the official api
+   */
   try {
     const data = await retreiveVideo(req.params.id);
     return res.send(data);
@@ -26,10 +29,32 @@ router.get("/youtube/video/:id" , async (req, res) => {
 });
 
 router.get("/youtube/download/:id" , async (req, res) => {
+  /*
+   * downloads a youtube ID to a video file using youtube-dl
+   * the file is saved to data/downloaded/ID.FILEEXT
+   */
   try {
     const id = req.params.id;
     const { fileName } = await downloadVideo(id);
-    await convertToMp3(fileName, id);
+    return res.send({ fileName });
+  }
+  catch (e){
+    console.log(e)
+    return errorHandler(res, e);
+  }
+});
+
+router.post("/convert/mp3" , async (req, res) => {
+  /*
+   * converts a file on disk to mp3 using ffmpeg
+   * the file is saved to data/converted/ID.mp3
+   */
+  try {
+
+    const fileName = req.body.fileName;
+
+    console.log(fileName);
+    await convertToMp3(fileName);
     return res.send("success");
 
   }
@@ -38,6 +63,7 @@ router.get("/youtube/download/:id" , async (req, res) => {
     return errorHandler(res, e);
   }
 });
+
 
 /*
 // refer to this:

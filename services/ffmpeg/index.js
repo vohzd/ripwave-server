@@ -10,25 +10,17 @@ const { spawn }     = require("child_process");
 const path          = require("path");
 const rootDir       = path.resolve();
 
-async function convertToMp3(fileName, id){
+async function convertToMp3(fileName){
   console.log("SERVICE: convertToMp3")
 
   return new Promise((resolve, reject) => {
-    console.log(fileName)
 
     /*
      * create input/output paths according to taste
      */
-
-
+    const id = fileName.split(".")[0];
     const audioOutputPath = `${rootDir}/data/converted/${id}.mp3`;
     const videoPath = `${rootDir}/data/downloaded/${fileName}`;
-    //const videoPath = `C:/dev/ripwave/data/downloaded/${fileName}`
-
-    console.log("AUDIO PATH")
-    console.log(audioOutputPath)
-    console.log("VIDEO PATH")
-    console.log(videoPath)
 
     /*
      * the args ffmpeg takes
@@ -49,20 +41,18 @@ async function convertToMp3(fileName, id){
      * listen to success/fail/completion
      */
 
-    cmd.stdout.on("data", (data) => {
-      console.log("DATA")
-      console.log(data)
-    });
-
-    // errors will arrive as a buffer otherwise...
+     // for some crazy reason, ffmpeg only logs to stderr
+     // https://stackoverflow.com/questions/35169650/differentiate-between-error-and-standard-terminal-log-with-ffmpeg-nodejs
+     // https://trac.ffmpeg.org/ticket/5880
     cmd.stderr.setEncoding("utf8")
     cmd.stderr.on("data", (err) => {
-      console.log("ERROR")
+      console.log("FFMPEG SEZ")
       console.log(err)
     });
 
     cmd.on("close", () => {
       console.log("CLOSED");
+      resolve()
     });
 
   });
