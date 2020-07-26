@@ -22,8 +22,8 @@ async function convertToMp3(fileName, id){
 
 
     const audioOutputPath = `${rootDir}/data/converted/${id}.mp3`;
-    //const videoPath = `${rootDir}/data/downloaded/${fileName}`;
-    const videoPath = `C:/dev/ripwave/data/downloaded/${fileName}`
+    const videoPath = `${rootDir}/data/downloaded/${fileName}`;
+    //const videoPath = `C:/dev/ripwave/data/downloaded/${fileName}`
 
     console.log("AUDIO PATH")
     console.log(audioOutputPath)

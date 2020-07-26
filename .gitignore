@@ -13,6 +13,7 @@ keys/mongo.js
 keys/s3.js
 keys/youtube-api.js
 keys/lastfm-api.js
+data/converted/*
 
 # Nuxt generate
 dist

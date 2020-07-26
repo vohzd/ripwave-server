@@ -5,6 +5,7 @@
  *
  */
 
+
 const { spawn }     = require("child_process");
 
 const path          = require("path");
@@ -53,7 +54,8 @@ async function downloadVideo(id){
 
         // dont hate me for this
         let alreadyDownloadedPath = data.split("[download]")[1].split("has already been downloaded and merged")[0].split(".")
-        const fileName = alreadyDownloadedPath[0].split("\\")[alreadyDownloadedPath[0].split("\\").length - 1];
+        let fileName = alreadyDownloadedPath[0].split("\\")[alreadyDownloadedPath[0].split("\\").length - 1];
+              fileName = fileName.replace(/\s/g, "");
         const fileExtension = alreadyDownloadedPath[1];
         fileNameWithExt = `${fileName}.${fileExtension}`;
       }
