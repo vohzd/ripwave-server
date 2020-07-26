@@ -1,0 +1,29 @@
+{
+  "name": "ripwave",
+  "version": "0.0.1",
+  "description": "ripwave server",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development nodemon ./index.js",
+    "start": "cross-env IS_DEV=FALSE NODE_ENV=production node ./index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vohzd/ripwave-server.git"
+  },
+  "keywords": [
+    "music"
+  ],
+  "author": "vohzd",
+  "bugs": {
+    "url": "https://github.com/vohzd/ripwave-server/issues"
+  },
+  "homepage": "https://github.com/vohzd/ripwave-server#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.5",
+    "cross-env": "^7.0.2",
+    "express": "^4.17.1",
+    "express-validator": "^6.5.0",
+    "googleapis": "^52.1.0"
+  }
+}

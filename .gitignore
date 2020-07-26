@@ -1,0 +1,18 @@
+# dependencies
+node_modules
+
+# logs
+npm-debug.log
+access.json
+
+# Nuxt build
+.nuxt
+
+keys/jwtSecret.js
+keys/mongo.js
+keys/s3.js
+keys/youtube-api.js
+keys/lastfm-api.js
+
+# Nuxt generate
+dist
