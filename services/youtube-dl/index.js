@@ -1,11 +1,3 @@
-/*
- *
- * THIS USES EXEC, BUT TRYING SPAWN FOR THE REASONS OUTLINED HERE>>>
- * https://stackoverflow.com/questions/42012342/running-ffmpeg-via-nodejs-error
- *
- */
-
-
 const { spawn }     = require("child_process");
 
 const path          = require("path");

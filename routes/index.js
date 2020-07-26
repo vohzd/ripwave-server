@@ -25,7 +25,7 @@ router.get("/youtube/video/:id" , async (req, res) => {
     const data = await retreiveVideo(req.params.id);
     return res.send(data);
   }
-  catch (e){ return errorHandler(res, e); }
+  catch (e){ return errorHandler(res, e) }
 });
 
 router.get("/youtube/download/:id" , async (req, res) => {
@@ -38,10 +38,7 @@ router.get("/youtube/download/:id" , async (req, res) => {
     const { fileName } = await downloadVideo(id);
     return res.send({ fileName });
   }
-  catch (e){
-    console.log(e)
-    return errorHandler(res, e);
-  }
+  catch (e){ return errorHandler(res, e) }
 });
 
 router.post("/convert/mp3" , async (req, res) => {
@@ -50,13 +47,9 @@ router.post("/convert/mp3" , async (req, res) => {
    * the file is saved to data/converted/ID.mp3
    */
   try {
-
     const fileName = req.body.fileName;
-
-    console.log(fileName);
-    await convertToMp3(fileName);
-    return res.send("success");
-
+    const { audioFile } = await convertToMp3(fileName);
+    return res.send({ audioFile });
   }
   catch (e){
     console.log(e)

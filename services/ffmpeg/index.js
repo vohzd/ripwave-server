@@ -1,10 +1,3 @@
-/*
- *
- * THIS USES EXEC, BUT TRYING SPAWN FOR THE REASONS OUTLINED HERE>>>
- * https://stackoverflow.com/questions/42012342/running-ffmpeg-via-nodejs-error
- *
- */
-
 const { spawn }     = require("child_process");
 
 const path          = require("path");
@@ -39,20 +32,19 @@ async function convertToMp3(fileName){
 
     /*
      * listen to success/fail/completion
+     * for some crazy reason, ffmpeg only logs to stderr
+     * https://stackoverflow.com/questions/35169650/differentiate-between-error-and-standard-terminal-log-with-ffmpeg-nodejs
+     * https://trac.ffmpeg.org/ticket/5880
      */
-
-     // for some crazy reason, ffmpeg only logs to stderr
-     // https://stackoverflow.com/questions/35169650/differentiate-between-error-and-standard-terminal-log-with-ffmpeg-nodejs
-     // https://trac.ffmpeg.org/ticket/5880
     cmd.stderr.setEncoding("utf8")
-    cmd.stderr.on("data", (err) => {
-      console.log("FFMPEG SEZ")
-      console.log(err)
+    cmd.stderr.on("data", (output) => {
+      console.log(output)
     });
 
+    // inform whomever called this its done
     cmd.on("close", () => {
-      console.log("CLOSED");
-      resolve()
+      console.log("FINISHED")
+      resolve({ audioFile: audioOutputPath })
     });
 
   });
