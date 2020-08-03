@@ -50,6 +50,55 @@ async function convertToMp3(fileName){
   });
 }
 
+async function splitMp3(details){
+
+  //ffmpeg
+  console.log("SERVICE: splitMp3")
+  console.log("OH HAI")
+  console.log(details)
+
+  /*
+   * the args ffmpeg takes
+   * final command looks something like this;
+   * ffmpeg -i BIG_FILE -acodec copy -ss START_TIME -to END_TIME LITTLE_FILE
+   */
+
+   /*
+
+  const args = [
+    "-i", `${rootDir}/data/converted/${details.id}.mp3`, "-acodec", "copy", "-ss", details.tracks[0].start, "-to", details.tracks[1].start, `${rootDir}/data/split/${details.tracks[0].name}.mp3`
+  ];*/
+
+
+   details.tracks.forEach((track, i) => {
+     const args = [
+       "-i", `${rootDir}/data/converted/${details.id}.mp3`, "-acodec", "copy", "-ss", details.tracks[i].start, "-to", details.tracks[i].end, `${rootDir}/data/split/${details.tracks[i].name}.mp3`
+     ]
+     console.log(args)
+     //const cmd = spawn("ffmpeg", args);
+   });
+
+
+  /*
+   * execute the command
+   */
+
+
+
+  cmd.stdout.setEncoding("utf8")
+  cmd.stdout.on("data", (data) => {
+    console.log("DATA")
+    console.log(data)
+  });
+
+  cmd.stderr.setEncoding("utf8")
+  cmd.stderr.on("data", (output) => {
+    console.log(output)
+  });
+
+}
+
 module.exports = {
-  convertToMp3
+  convertToMp3,
+  splitMp3
 }

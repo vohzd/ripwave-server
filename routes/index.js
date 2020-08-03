@@ -14,7 +14,8 @@ const {
 }                                         = require("../services/youtube-dl/index.js");
 
 const {
-  convertToMp3
+  convertToMp3,
+  splitMp3
 }                                         = require("../services/ffmpeg/index.js");
 
 router.get("/youtube/video/:id" , async (req, res) => {
@@ -50,6 +51,29 @@ router.post("/convert/mp3" , async (req, res) => {
     const fileName = req.body.fileName;
     const { audioFile } = await convertToMp3(fileName);
     return res.send({ audioFile });
+  }
+  catch (e){
+    console.log(e)
+    return errorHandler(res, e);
+  }
+});
+
+router.post("/split/mp3" , async (req, res) => {
+  /*
+   * uses ffmpeg to split an mp3 into chunks according to timestamps
+   * the file is saved to data/converted/ID.mp3
+   */
+  try {
+
+    /*
+    const fileName = req.body.fileName;
+    const { audioFile } = await convertToMp3(fileName);
+    return res.send({ audioFile });*/
+
+    console.log("whassup")
+    console.log(req.body);
+
+    splitMp3(req.body);
   }
   catch (e){
     console.log(e)

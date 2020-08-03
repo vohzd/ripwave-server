@@ -31,9 +31,10 @@ async function retreiveChannelPlaylists(channelID){
 async function retreiveVideo(id){
   try {
     const { data } = await youtube.videos.list({
-      part: "snippet",
+      part: "snippet,contentDetails",
       id: id,
     });
+    console.log(data)
     return data;
   }
   catch (e){
